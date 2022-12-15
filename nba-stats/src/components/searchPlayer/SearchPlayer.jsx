@@ -2,44 +2,76 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 
-const SearchPlayer = ({ player1Search }) => {
+const SearchPlayer = ({ setPlayers, players }) => {
   const [searchPlayer, setSearchPlayer] = useState({});
   const [player, setPlayer] = useState({});
   const [playerId, setPlayerId] = useState(null);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [selectYear, setSelectYear] = useState();
 
   useEffect(() => {
-    axios
-      .get(`https://www.balldontlie.io/api/v1/players?search=${searchPlayer}`)
-      .then(async (res) => {
-        if ((res.data.data.length = 1 && res.data.data[0].id)) {
-          setPlayer(res.data.data[0]);
-          setPlayerId(res.data.data[0].id);
-        }
-      });
+    if (searchPlayer)
+      axios
+        .get(`https://www.balldontlie.io/api/v1/players?search=${searchPlayer}`)
+        .then(async (res) => {
+          if (res.data.data && res.data.data[0]?.id) {
+            setPlayer(res.data.data[0]);
+            setPlayerId(res.data.data[0].id);
+          }
+        });
   }, [searchPlayer]);
 
   useEffect(() => {
-    axios
-      .get(
-        `https://www.balldontlie.io/api/v1/season_averages?season=2022&player_ids[]=${playerId}`
-      )
-      .then(async (res) => {
-        console.log(res.data.data);
-        await player1Search({
-          playerDetails: player,
-          stats: res.data.data[0],
+    if (playerId)
+      axios
+        .get(
+          `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
+        )
+        .then(async (res) => {
+          console.log(res.data.data);
+          await setPlayers([
+            ...players,
+            {
+              playerDetails: player,
+              stats: res.data.data[0],
+            },
+          ]);
         });
-      });
-  }, [player, player1Search, playerId]);
+  }, [player, setPlayers, playerId, year]);
 
   const searchPlayerByName = (e) => {
     if (e.key === "Enter") setSearchPlayer(e.target.value);
-    console.log(searchPlayer);
   };
 
   return (
     <div>
-      <input type="text" onKeyDown={searchPlayerByName} />
+      <form
+        action=""
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(e);
+          if (e.target) {
+            setSearchPlayer(e.target[0].value);
+            setYear(Number(e.target[1].value));
+          }
+        }}
+      >
+        <input type="text" onKeyDown={searchPlayerByName} />
+        <input
+          type="text"
+          name="year"
+          id="year"
+          onChange={(e) => {
+            if (
+              e.target.value.length === 4 &&
+              e.target.value > 1979 &&
+              e.target.value <= year
+            )
+              setYear(Number(e.target.value));
+          }}
+        />
+        <input type="submit" value="Submit!" />
+      </form>
     </div>
   );
 };

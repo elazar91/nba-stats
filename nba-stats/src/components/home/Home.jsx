@@ -1,19 +1,19 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import SearchPlayer from "../searchPlayer/SearchPlayer";
 import Player from "../player/Player";
-import { useState, useEffect } from "react";
+import style from "./Home.module.scss";
 
 export const Home = () => {
-  const [player1, setPlayer1] = useState();
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    console.log(player1);
-  }, [player1]);
+    console.log(players);
+  }, [players]);
 
   return (
-    <div>
-      <SearchPlayer player1Search={setPlayer1} />
-      <Player player1={player1} />
+    <div className={style.home}>
+      <SearchPlayer setPlayers={setPlayers} players={players} />
+      <Player players={players} />
     </div>
   );
 };
