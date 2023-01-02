@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Dropdown from "./dropdown/Dropdown";
+import style from "./SearchPlayer.module.scss";
 
 const SearchPlayer = ({ setPlayers, players }) => {
   const [searchPlayer, setSearchPlayer] = useState({});
@@ -56,7 +57,7 @@ const SearchPlayer = ({ setPlayers, players }) => {
   return (
     <div>
       <form
-        action=""
+        className={style.form}
         onSubmit={(e) => {
           e.preventDefault();
           console.log(e);
@@ -66,8 +67,15 @@ const SearchPlayer = ({ setPlayers, players }) => {
           }
         }}
       >
-        <input type="text" onChange={searchPlayerByName} />
-        {playersList && <Dropdown playersList={playersList} />}
+        <div className={style.searchPlayer}>
+          <input type="text" onChange={searchPlayerByName} />
+          {playersList && (
+            <Dropdown
+              playersList={playersList}
+              setSearchPlayer={setSearchPlayer}
+            />
+          )}
+        </div>
         <input
           type="text"
           name="year"
