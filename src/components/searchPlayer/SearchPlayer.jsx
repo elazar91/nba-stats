@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import Dropdown from "./dropdown/Dropdown";
 
 const SearchPlayer = ({ setPlayers, players }) => {
   const [searchPlayer, setSearchPlayer] = useState({});
@@ -8,15 +9,23 @@ const SearchPlayer = ({ setPlayers, players }) => {
   const [playerId, setPlayerId] = useState(null);
   const [year, setYear] = useState(new Date().getFullYear());
   const [selectYear, setSelectYear] = useState();
+  const [playersList, setPlayersList] = useState();
 
   useEffect(() => {
     if (searchPlayer)
       axios
-        .get(`https://www.balldontlie.io/api/v1/players?search=${searchPlayer}`)
+        .get(
+          `https://www.balldontlie.io/api/v1/players?per_page=100&search=${searchPlayer}`
+        )
         .then(async (res) => {
-          if (res.data.data && res.data.data[0]?.id) {
-            setPlayer(res.data.data[0]);
-            setPlayerId(res.data.data[0].id);
+          console.log("Players list: ", res.data.data);
+          if (res.data.data && res.data.data.length > 0) {
+            setPlayersList(res.data.data);
+
+            // if (res.data.data[0]?.id) {
+            //   setPlayer(res.data.data[0]);
+            //   setPlayerId(res.data.data[0].id);
+            // }
           }
         });
   }, [searchPlayer]);
@@ -40,7 +49,8 @@ const SearchPlayer = ({ setPlayers, players }) => {
   }, [player, setPlayers, playerId, year]);
 
   const searchPlayerByName = (e) => {
-    if (e.key === "Enter") setSearchPlayer(e.target.value);
+    // console.log(searchPlayer);
+    setSearchPlayer(e.target.value);
   };
 
   return (
@@ -56,7 +66,8 @@ const SearchPlayer = ({ setPlayers, players }) => {
           }
         }}
       >
-        <input type="text" onKeyDown={searchPlayerByName} />
+        <input type="text" onChange={searchPlayerByName} />
+        {playersList && <Dropdown playersList={playersList} />}
         <input
           type="text"
           name="year"
