@@ -1,6 +1,6 @@
 import React from "react";
 import Stat from "../stat/Stat";
-import style from "./Stats.modules.scss";
+import style from "./Stats.module.scss";
 
 const Stats = ({ player }) => {
   return (
