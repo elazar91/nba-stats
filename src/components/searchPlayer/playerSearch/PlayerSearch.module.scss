@@ -1,9 +1,12 @@
-.dropdown {
+.playersList {
   position: absolute;
   max-height: 165px;
-  width: 100%;
+  width: 200px;
   border: 1px solid black;
   overflow: scroll;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
   .selectPlayer {
     padding: 5px 0;
