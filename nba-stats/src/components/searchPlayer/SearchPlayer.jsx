@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import Dropdown from "./dropdown/Dropdown";
 import style from "./SearchPlayer.module.scss";
+import YearSelect from "./yearSelect/YearSelect";
+import PlayerSearch from "./playerSearch/PlayerSearch";
 
 const SearchPlayer = ({ setPlayers, players }) => {
   const [searchPlayer, setSearchPlayer] = useState({});
-  const [player, setPlayer] = useState({});
-  const [playerId, setPlayerId] = useState(null);
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [selectYear, setSelectYear] = useState();
+  const [player, setPlayer] = useState();
+  const [playerId, setPlayerId] = useState();
+  const [year, setYear] = useState();
   const [playersList, setPlayersList] = useState();
 
   useEffect(() => {
@@ -22,36 +22,45 @@ const SearchPlayer = ({ setPlayers, players }) => {
           console.log("Players list: ", res.data.data);
           if (res.data.data && res.data.data.length > 0) {
             setPlayersList(res.data.data);
-
-            // if (res.data.data[0]?.id) {
-            //   setPlayer(res.data.data[0]);
-            //   setPlayerId(res.data.data[0].id);
-            // }
           }
         });
   }, [searchPlayer]);
 
-  useEffect(() => {
-    if (playerId)
-      axios
-        .get(
-          `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
-        )
-        .then(async (res) => {
-          console.log(res.data.data);
-          await setPlayers([
-            ...players,
-            {
-              playerDetails: player,
-              stats: res.data.data[0],
-            },
-          ]);
-        });
-  }, [player, setPlayers, playerId, year]);
+  // useEffect(() => {
+  //   if (playerId && year)
+  //     axios
+  //       .get(
+  //         `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
+  //       )
+  //       .then(async (res) => {
+  //         console.log(res);
+  //         await setPlayers([
+  //           ...players,
+  //           {
+  //             playerDetails: player,
+  //             stats: res.data.data[0],
+  //           },
+  //         ]);
+  //       });
+  //   // getPlayerData();
+  // }, [player, setPlayers, playerId, year]);
 
-  const searchPlayerByName = (e) => {
-    // console.log(searchPlayer);
-    setSearchPlayer(e.target.value);
+  const getPlayerData = () => {
+    console.log({ playerId, year });
+    axios
+      .get(
+        `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
+      )
+      .then((res) => {
+        console.log(res);
+        setPlayers([
+          ...players,
+          {
+            playerDetails: player,
+            stats: res.data.data[0],
+          },
+        ]);
+      });
   };
 
   return (
@@ -60,35 +69,18 @@ const SearchPlayer = ({ setPlayers, players }) => {
         className={style.form}
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(e);
-          if (e.target) {
-            setSearchPlayer(e.target[0].value);
-            setYear(Number(e.target[1].value));
-          }
+          getPlayerData();
         }}
       >
         <div className={style.searchPlayer}>
-          <input type="text" onChange={searchPlayerByName} />
-          {playersList && (
-            <Dropdown
-              playersList={playersList}
-              setSearchPlayer={setSearchPlayer}
-            />
-          )}
+          <PlayerSearch
+            playersList={playersList}
+            setPlayerId={setPlayerId}
+            setSearchPlayer={setSearchPlayer}
+            setPlayer={setPlayer}
+          />
         </div>
-        <input
-          type="text"
-          name="year"
-          id="year"
-          onChange={(e) => {
-            if (
-              e.target.value.length === 4 &&
-              e.target.value > 1979 &&
-              e.target.value <= year
-            )
-              setYear(Number(e.target.value));
-          }}
-        />
+        <YearSelect setYear={setYear} />
         <input type="submit" value="Submit!" />
       </form>
     </div>

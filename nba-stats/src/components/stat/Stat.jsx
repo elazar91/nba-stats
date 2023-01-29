@@ -1,6 +1,6 @@
 import React from "react";
 
-const Stat = ({ name, number }) => {
+const Stat = ({ number }) => {
   return (
     <>
       <td>{number}</td>
