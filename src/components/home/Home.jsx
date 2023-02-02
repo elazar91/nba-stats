@@ -20,6 +20,9 @@ export const Home = () => {
         return {
           label: `${player.playerDetails.first_name} ${player.playerDetails.last_name}`,
           data: [player.stats.pts],
+          backgroundColor: `rgba(${Math.random() * 255}, ${
+            Math.random() * 255
+          }, ${Math.random() * 255}, 0.5)`,
         };
       }),
     });
