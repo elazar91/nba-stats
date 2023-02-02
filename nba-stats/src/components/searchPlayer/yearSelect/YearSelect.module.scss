@@ -1,12 +1,14 @@
 .yearsList {
   position: absolute;
   max-height: 165px;
-  width: 200px;
+  width: 145px;
   border: 1px solid black;
   overflow: scroll;
   margin: 0;
   padding: 0;
   list-style: none;
+  background: rgb(200 105 34);
+  color: white;
 
   .selectYear {
     padding: 5px 0;

@@ -11,10 +11,6 @@ export const Home = () => {
   useEffect(() => {
     console.log({ playersData });
     setPlayersData({
-      // labels: players.map(
-      //   (player) =>
-      //     `${player.playerDetails.first_name} ${player.playerDetails.last_name}`
-      // ),
       labels: ["points"],
       datasets: players.map((player) => {
         return {
@@ -22,7 +18,7 @@ export const Home = () => {
           data: [player.stats.pts],
           backgroundColor: `rgba(${Math.random() * 255}, ${
             Math.random() * 255
-          }, ${Math.random() * 255}, 0.5)`,
+          }, ${Math.random() * 255}, 0.7)`,
         };
       }),
     });
