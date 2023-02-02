@@ -2,7 +2,6 @@ import React from "react";
 import Stats from "../stats/Stats";
 
 const Player = ({ players }) => {
-  console.log(players);
   return (
     <table cellSpacing="0" border="1">
       <tbody>

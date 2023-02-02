@@ -19,40 +19,18 @@ const SearchPlayer = ({ setPlayers, players }) => {
           `https://www.balldontlie.io/api/v1/players?per_page=100&search=${searchPlayer}`
         )
         .then(async (res) => {
-          console.log("Players list: ", res.data.data);
           if (res.data.data && res.data.data.length > 0) {
             setPlayersList(res.data.data);
           }
         });
   }, [searchPlayer]);
 
-  // useEffect(() => {
-  //   if (playerId && year)
-  //     axios
-  //       .get(
-  //         `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
-  //       )
-  //       .then(async (res) => {
-  //         console.log(res);
-  //         await setPlayers([
-  //           ...players,
-  //           {
-  //             playerDetails: player,
-  //             stats: res.data.data[0],
-  //           },
-  //         ]);
-  //       });
-  //   // getPlayerData();
-  // }, [player, setPlayers, playerId, year]);
-
   const getPlayerData = () => {
-    console.log({ playerId, year });
     axios
       .get(
         `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
       )
       .then((res) => {
-        console.log(res);
         setPlayers([
           ...players,
           {
