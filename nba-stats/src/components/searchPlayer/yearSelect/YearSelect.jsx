@@ -5,7 +5,10 @@ const YearSelect = ({ setYear }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 1978 }, (_, i) => 1979 + i);
+  const years = Array.from(
+    { length: currentYear - 1 - 1978 },
+    (_, i) => 1979 + i
+  );
 
   const filteredYears = years.filter((y) => y.toString().includes(searchTerm));
 

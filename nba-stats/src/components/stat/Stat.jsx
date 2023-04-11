@@ -1,9 +1,9 @@
 import React from "react";
 
-const Stat = ({ number }) => {
+const Stat = ({ number, highest }) => {
   return (
     <>
-      <td>{number}</td>
+      <td className={highest ? "highest" : ""}>{number}</td>
     </>
   );
 };

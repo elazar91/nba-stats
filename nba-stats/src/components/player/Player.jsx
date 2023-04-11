@@ -27,7 +27,9 @@ const Player = ({ players }) => {
           <th>BLK</th>
         </tr>
         {players?.length >= 0
-          ? players?.map((player) => <Stats key={player?.id} player={player} />)
+          ? players?.map((player) => (
+              <Stats key={player?.id} player={player} players={players} />
+            ))
           : null}
       </tbody>
     </table>

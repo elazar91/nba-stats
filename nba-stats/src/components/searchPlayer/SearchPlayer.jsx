@@ -11,6 +11,7 @@ const SearchPlayer = ({ setPlayers, players }) => {
   const [playerId, setPlayerId] = useState();
   const [year, setYear] = useState();
   const [playersList, setPlayersList] = useState();
+  const [postSeason, setPostSeason] = useState(false);
 
   useEffect(() => {
     if (searchPlayer)
@@ -25,7 +26,7 @@ const SearchPlayer = ({ setPlayers, players }) => {
         });
   }, [searchPlayer]);
 
-  const getPlayerData = () => {
+  const getPlayerAverage = () => {
     axios
       .get(
         `https://www.balldontlie.io/api/v1/season_averages?season=${year}&player_ids[]=${playerId}`
@@ -47,7 +48,7 @@ const SearchPlayer = ({ setPlayers, players }) => {
         className={style.form}
         onSubmit={(e) => {
           e.preventDefault();
-          getPlayerData();
+          getPlayerAverage();
         }}
       >
         <div className={style.searchPlayer}>
