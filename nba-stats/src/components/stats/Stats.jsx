@@ -41,7 +41,7 @@ const Stats = ({ player, players }) => {
       let object = obj.stats;
       for (let key in object) {
         if (
-          (typeof object[key] === "number" && result[key] === undefined) ||
+          (typeof object[key] === "statNumber" && result[key] === undefined) ||
           object[key] > result[key]
         ) {
           result[key] = object[key];
@@ -50,7 +50,7 @@ const Stats = ({ player, players }) => {
       return result;
     }, {});
     setHighest(result);
-    console.log(highest);
+    // console.log(highest);
   };
 
   return (
@@ -58,24 +58,18 @@ const Stats = ({ player, players }) => {
       <td className={Style.firstName}>
         {player?.playerDetails?.first_name} {player?.playerDetails?.last_name}
       </td>
-      <Stat number={player?.stats?.games_played} highest={highest} />
-      <Stat number={player?.stats?.min} highest={highest} />
-      <Stat number={player?.stats?.pts} highest={highest} />
-      <Stat number={player?.stats?.fgm} highest={highest} />
-      <Stat number={player?.stats?.fga} highest={highest} />
-      <Stat number={player?.stats?.fg_pct} highest={highest} />
-      <Stat number={player?.stats?.fg3m} highest={highest} />
-      <Stat number={player?.stats?.fg3a} highest={highest} />
-      <Stat number={player?.stats?.fg3_pct} highest={highest} />
-      <Stat number={player?.stats?.ftm} highest={highest} />
-      <Stat number={player?.stats?.fta} highest={highest} />
-      <Stat number={player?.stats?.ft_pct} highest={highest} />
-      <Stat number={player?.stats?.oreb} highest={highest} />
-      <Stat number={player?.stats?.dreb} highest={highest} />
-      <Stat number={player?.stats?.reb} highest={highest} />
-      <Stat number={player?.stats?.ast} highest={highest} />
-      <Stat number={player?.stats?.stl} highest={highest} />
-      <Stat number={player?.stats?.blk} highest={highest} />
+      {Object.keys(player.stats).map((key, index) => {
+        console.log({ key });
+        console.log("value: ", player.stats[key]);
+        return (
+          <Stat
+            key={index}
+            highest={highest}
+            player={player}
+            statNumber={{ key: player.stats[key] }}
+          />
+        );
+      })}
     </tr>
   );
 };
